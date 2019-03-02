@@ -1,2 +1,2 @@
-# tetris-react-go
+# tetris-react
 Tetris app in react
