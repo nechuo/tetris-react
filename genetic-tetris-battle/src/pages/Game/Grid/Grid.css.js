@@ -1,16 +1,10 @@
 const styles = {
-  container: {
-    width: "100%",
-    height: "100%",
-    display: "flex",
-    justifyContent: "center",
-    flexWrap: "wrap",
-  },
-  grid: {
-    border: "3px solid #888888",
-    extend: "container",
+  container: ({ theme }) => theme.container,
+  grid: ({ theme }) => ({
+    ...theme.container,
     marginTop: 60,
-  },
+    border: "3px solid #888888",
+  }),
   gridRect: {
     width: 40,
     height: 40,

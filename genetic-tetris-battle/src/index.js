@@ -1,12 +1,17 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import Game from './pages/Game/Game';
+import React from "react";
+import ReactDOM from "react-dom";
+
+//  Styles
+import "./index.css";
+import theme from "./assets/css/theme";
+import { ThemeProvider } from "react-jss";
+
+// Components
+import Game from "./pages/Game/Game";
 
 ReactDOM.render(
-  <React.StrictMode>
+  <ThemeProvider theme={theme}>
     <Game />
-  </React.StrictMode>,
-  document.getElementById('root')
+  </ThemeProvider>,
+  document.getElementById("root")
 );
-
