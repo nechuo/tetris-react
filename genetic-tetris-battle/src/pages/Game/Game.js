@@ -1,4 +1,4 @@
-import React, { createContext, useReducer, useEffect } from "react";
+import React, { createContext, useReducer } from "react";
 
 // Reducers
 import rootReducer from "../../reducers/rootReducer";
@@ -6,6 +6,7 @@ import intitialState from "../../reducers/initialState";
 
 // Components
 import Grid from "./Grid/Grid";
+import CurrentTetromino from "./CurrentTetromino/CurrentTetromino";
 
 // Styles
 import styles from "./Game.css";
@@ -16,23 +17,15 @@ const useStyles = createUseStyles(styles);
 export const GameContext = createContext();
 
 const Game = () => {
-  console.log("render");
   // Hooks
   const classes = useStyles();
   const [game, dispatch] = useReducer(rootReducer, intitialState);
-
-  // Set game 'gravity' interval
-  useEffect(() => {
-    const interval = setInterval(() => {
-      dispatch({ type: "CURRENT_TETROMINO/MOVE_DOWN" });
-    }, 1500);
-    return () => clearInterval(interval);
-  });
 
   return (
     <GameContext.Provider value={{ game, dispatch }}>
       <div className={classes.container}>
         <Grid />
+        <CurrentTetromino />
       </div>
     </GameContext.Provider>
   );

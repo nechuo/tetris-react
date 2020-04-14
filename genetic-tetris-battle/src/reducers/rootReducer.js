@@ -1,5 +1,6 @@
 // Reducers
 import grid from "./grid";
+import stackedBlocks from "./stackedBlocks";
 import currentTetromino from "./currentTetromino";
 
 const combineReducers = (reducers) => (state = {}, action) => {
@@ -10,4 +11,4 @@ const combineReducers = (reducers) => (state = {}, action) => {
   return newState;
 };
 
-export default combineReducers({ grid, currentTetromino });
+export default combineReducers({ grid, currentTetromino, stackedBlocks });

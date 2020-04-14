@@ -1,14 +1,27 @@
 // Model
 import TETROMINO_SHAPE_ENUM from "../enums/tetrominoShapeEnum";
 
-const randomInitialShape = () => {
-  const shapes = Object.keys(TETROMINO_SHAPE_ENUM);
-  return TETROMINO_SHAPE_ENUM[shapes[(shapes.length * Math.random()) << 0]];
+/**
+ * Shuffles array in place.
+ * @param a items An array containing the items.
+ */
+const shuffle = (a) => {
+  var j, x, i;
+  for (i = a.length - 1; i > 0; i--) {
+    j = Math.floor(Math.random() * (i + 1));
+    x = a[i];
+    a[i] = a[j];
+    a[j] = x;
+  }
+  return a;
 };
+
+const initialTetrominosBag = shuffle(Object.keys(TETROMINO_SHAPE_ENUM));
 
 // Tetris current tetromino initial state
 export const initialState = {
-  shape: randomInitialShape(),
+  tetrominosBag: initialTetrominosBag,
+  shape: initialTetrominosBag.pop(),
   rotation: 0, // from 0 to 3,
   xOffset: 4, // Horizontally centered
   yOffset: 0, // Top of the grid
@@ -30,6 +43,18 @@ const currentTetromino = (state, action) => {
       return { ...state, yOffset: state.xOffset + 1 };
     case "CURRENT_TETROMINO/MOVE_LEFT":
       return { ...state, yOffset: state.xOffset - 1 };
+
+    case "CURRENT_TETROMINO/CHANGE_TETROMINO": {
+      const tetrominosBag =
+        state.tetrominosBag.length > 0
+          ? state.tetrominosBag
+          : shuffle(Object.keys(TETROMINO_SHAPE_ENUM));
+      const newShape = tetrominosBag.splice(
+        Math.floor(Math.random() * tetrominosBag.length),
+        1
+      );
+      return { ...state, shape: newShape, tetrominosBag };
+    }
     default:
       return state;
   }
