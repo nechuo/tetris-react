@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 
 // Constants
 import _shapeToColor from "../../../constants/shapeToColor";
-import _shapeToCoordinates from "../../../constants/shapeToCoordinates";
 
 // Context
 import { GameContext } from "../Game";
@@ -13,16 +12,18 @@ import { createUseStyles, useTheme } from "react-jss";
 const useStyles = createUseStyles(styles);
 
 const Grid = () => {
-  // Hooks
+  // Styles
   const theme = useTheme();
   const classes = useStyles({ theme });
+
+  // Context data
   const {
     game: { grid, stackedBlocks, currentTetromino },
-  } = useContext(GameContext); // Context data
-
-  // Methods
+  } = useContext(GameContext);
 
   /**
+   * calculateGridBlockColor
+   *
    * Each 'slot' of the grid is drawn here.
    * If it overlaps one of the current tetromino block,
    * then return the current tetromino color.
@@ -33,12 +34,8 @@ const Grid = () => {
    * All the colors can ben changed in the constants
    */
   const calculateGridBlockColor = (gridBlockX, gridBlockY) => {
-    // Find the current tetromino coordinates array from the templates
-    const currentTetrominoCoordinates =
-      _shapeToCoordinates[currentTetromino.shape][currentTetromino.rotation]; // 4 blocks !
-
     // Check if the current grid slot is part of the current tetromino
-    const matchTetrominoBlock = currentTetrominoCoordinates.find(
+    const matchTetrominoBlock = currentTetromino.blocks.find(
       (block) =>
         block.x + currentTetromino.xOffset === gridBlockX &&
         block.y + currentTetromino.yOffset === gridBlockY
@@ -52,13 +49,13 @@ const Grid = () => {
     return matchTetrominoBlock != null
       ? _shapeToColor[currentTetromino.shape] // Tetromino color
       : matchStackedBlock != null
-      ? matchStackedBlock.color // Stack block color
+      ? _shapeToColor[matchStackedBlock.shape] // Stack block color
       : "black"; // Grid empty slock black color
   };
 
-  // Render
-
   /**
+   * renderGrid
+   *
    * Render the grid's 'nbVerticalBlocks * nbHorizontalBlocks' blocks
    * Each drawn block has a dynamic css background color.
    * If a block belong to the current tetromino, then use its color.
@@ -71,7 +68,7 @@ const Grid = () => {
         rects.push(
           <div
             className={classes.gridRect}
-            key={x * grid.nbHorizontalBlocks + y}
+            key={y * grid.nbHorizontalBlocks + x}
             style={{ backgroundColor: calculateGridBlockColor(x, y) }}
           />
         );
@@ -80,6 +77,7 @@ const Grid = () => {
     return rects;
   };
 
+  // Render
   return (
     <div className={classes.container}>
       <div

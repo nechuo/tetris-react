@@ -11,7 +11,7 @@ import { ThemeProvider, createUseStyles } from "react-jss";
 const useStyles = createUseStyles(styles);
 
 const App = () => {
-  // Hooks
+  // Styles
   useStyles();
 
   return (
@@ -21,4 +21,5 @@ const App = () => {
   );
 };
 
+// Render the application in the specified div id
 ReactDOM.render(<App />, document.getElementById("root"));

@@ -15,8 +15,8 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: "module",
   },
-  plugins: ["react"],
-  rules: {},
+  plugins: ["react", "react-hooks"],
+  rules: { "react-hooks/exhaustive-deps": "off" },
   settings: {
     react: {
       version: "detect",

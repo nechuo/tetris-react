@@ -8,9 +8,9 @@ const stackedBlocks = (state, action) => {
   switch (action.type) {
     case "STACKED_BLOCKS/STACK_TETROMINO":
       // The action data must contain the 4 blocks coordinates + colors to stack
-      return state.concat(action.tetrominoBlocks);
+      return state.concat(action.blocksToStack);
 
-    case "STACKED_BLOCKS/CLEAN_LINES": {
+    case "STACKED_BLOCKS/CLEAR_LINES": {
       // The action data must contain the lines yCoordinates to clean
       const newState = state.filter(
         // Remove all the stacked blocks to clean
@@ -18,9 +18,12 @@ const stackedBlocks = (state, action) => {
       );
 
       // Move down all remaining stacked block
-      newState.forEach(
-        (stackedBlock) => (stackedBlock.y += action.linesToClean.length)
-      );
+      newState.forEach((stackedBlock) => {
+        // TODO calculate offset to add; bug !!!
+        if (action.linesToClean.indexOf(stackedBlock.y) === -1) {
+          stackedBlock.y += action.linesToClean.length;
+        }
+      });
       return newState;
     }
 

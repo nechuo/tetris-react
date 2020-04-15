@@ -1,7 +1,7 @@
 // Enums
 import TETROMINO_SHAPE_ENUM from "../enums/tetrominoShapeEnum";
 
-const _shapeToCoordinates = {
+const _shapeToBlocks = {
   [TETROMINO_SHAPE_ENUM.I]: [
     [
       { x: 0, y: 1 },
@@ -191,4 +191,4 @@ const _shapeToCoordinates = {
   ],
 };
 
-export default _shapeToCoordinates;
+export default _shapeToBlocks;

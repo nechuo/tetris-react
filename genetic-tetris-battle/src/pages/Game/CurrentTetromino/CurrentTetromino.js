@@ -1,31 +1,164 @@
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect, useCallback } from "react";
+
+// Custom hooks
+import useKeyboardKeys from "../../../customHooks/useKeyboardKeys";
+import usePreviousState from "../../../customHooks/usePreviousState";
 
 // Context
 import { GameContext } from "../Game";
+import _shapeToBlocks from "../../../constants/shapeToBlocks";
 
-// Styles
-import styles from "./CurrentTetromino.css";
-import { createUseStyles } from "react-jss";
-const useStyles = createUseStyles(styles);
-
+/**
+ * Hook to manage the current tetromino logic (moves + rotations from keyboard inputs)
+ * Stacks the current tetromino when falling down a stacked block or on the bottom edge of the grid
+ *
+ * Uses: currentTetromino, stackedBlocks, grid from GameContext
+ */
 const CurrentTetromino = () => {
-  // Hooks
-  const classes = useStyles();
+  // Context data
   const {
-    game: { currentTetromino, stackedBlocks },
+    game: { currentTetromino, stackedBlocks, grid },
     dispatch,
   } = useContext(GameContext);
 
-  // Set game 'gravity' interval
-  useEffect(() => {
-    const interval = setInterval(() => {
-      dispatch({ type: "CURRENT_TETROMINO/MOVE_DOWN" });
-    }, 1500);
-    return () => clearInterval(interval);
-  }, []);
+  // Keyboard keys state
+  const {
+    isLeft,
+    isDown,
+    isRight,
+    isRotateLeft,
+    isRotateRight,
+  } = useKeyboardKeys({});
 
-  // Render
-  return <div className={classes.container}></div>;
+  // Previous key state (from previous render)
+  // Used to prevent re-renders from useEffects below
+  const previousIsLeft = usePreviousState(isLeft);
+  const previousIsDown = usePreviousState(isDown);
+  const previousIsRight = usePreviousState(isRight);
+  const previousIsRotateLeft = usePreviousState(isRotateLeft);
+  const previousIsRotateRight = usePreviousState(isRotateRight);
+
+  /**
+   * calcIfPossibleMove
+   *
+   * Calculate if the given new tetromino offsets represent a possible move.
+   * A possible move corresponds to no tetromino block out of bounds or no tetromino block
+   * overlapping a previously stacked block
+   *
+   * useCallback: ensure that this function is re defined each time one of its dependecy changes.
+   * It allows the useEffects below to also trigger when one of theses deps change.
+   * That's the cost of factorising functions inside useEffects !
+   *
+   * @param {*} newXOffset
+   * @param {*} newYOffset
+   */
+  const calcIfPossibleMove = useCallback(
+    (newXOffset, newYOffset, tetrominoBlocks = currentTetromino.blocks) => {
+      // Check if the new offsets do not imply tetromino block outside the grid field
+      const isOutOfGrid = tetrominoBlocks.find(
+        (block) =>
+          block.x + currentTetromino.xOffset + newXOffset < 0 || // Grid left bound
+          block.x + currentTetromino.xOffset + newXOffset >=
+            grid.nbHorizontalBlocks || // Grid right bound
+          block.y + currentTetromino.yOffset + newYOffset >=
+            grid.nbVerticalBlocks // Grid bottom bound
+      );
+
+      // Check if the new offsets do not imply collision with an existing stacked block in the grid
+      const isOverlapStackedBlock = stackedBlocks.find((stackedBlock) =>
+        tetrominoBlocks.find(
+          (block) =>
+            block.x + currentTetromino.xOffset + newXOffset ===
+              stackedBlock.x && // X coordinate match
+            block.y + currentTetromino.yOffset + newYOffset === stackedBlock.y // Y coordinate match
+        )
+      );
+
+      // Is it a safe move ? :)
+      return !isOutOfGrid && !isOverlapStackedBlock;
+    },
+    [currentTetromino, grid, stackedBlocks]
+  );
+
+  //=======================
+  // HANDLE TETROMINO MOVES
+  //=======================
+
+  // ____________MOVE LEFT
+  useEffect(() => {
+    if (!previousIsLeft && isLeft) {
+      // Left => newXOffset: -1; newYOffset: 0
+      const isPossibleMove = calcIfPossibleMove(-1, 0);
+      if (isPossibleMove) dispatch({ type: "CURRENT_TETROMINO/MOVE_LEFT" });
+    }
+  }, [isLeft, previousIsLeft, calcIfPossibleMove, dispatch]);
+
+  // _____________MOVE RIGHT
+  useEffect(() => {
+    if (!previousIsRight && isRight) {
+      // Right => newXOffset: +1; newYOffset: 0
+      const isPossibleMove = calcIfPossibleMove(1, 0);
+      if (isPossibleMove) dispatch({ type: "CURRENT_TETROMINO/MOVE_RIGHT" });
+    }
+  }, [isRight, previousIsRight, calcIfPossibleMove, dispatch]);
+
+  // _____________MOVE DOWN
+  useEffect(() => {
+    if (!previousIsDown && isDown) {
+      // Down => newXOffset: 0; newYOffset: +1 (reverse Y axis)
+      const isPossibleMove = calcIfPossibleMove(0, 1);
+      if (isPossibleMove) {
+        dispatch({ type: "CURRENT_TETROMINO/MOVE_DOWN" });
+      } else {
+        // Stack the current tetromino blocks in the grid
+        const blocksToStack = currentTetromino.blocks.map((block) => ({
+          x: block.x + currentTetromino.xOffset, // Stacked blocks coordinates
+          y: block.y + currentTetromino.yOffset, // include offsets
+          shape: currentTetromino.shape, // + Also remember shape
+        }));
+        dispatch({ type: "STACKED_BLOCKS/STACK_TETROMINO", blocksToStack });
+      }
+    }
+  }, [isDown, previousIsDown, calcIfPossibleMove, dispatch, currentTetromino]);
+
+  // _____________ROTATE LEFT
+  useEffect(() => {
+    if (!previousIsRotateLeft && isRotateLeft) {
+      // Rotate left => no offsets, but new blocks ! (after rotation)
+      // Note : 3 === -1 + 4 : always positive values for mod operator
+      const newRotation = (currentTetromino.rotation + 3) % 4;
+      const rotatedBlocks = _shapeToBlocks[currentTetromino.shape][newRotation];
+      const isPossibleMove = calcIfPossibleMove(0, 0, rotatedBlocks);
+      if (isPossibleMove) dispatch({ type: "CURRENT_TETROMINO/ROTATE_LEFT" });
+    }
+  }, [
+    dispatch,
+    isRotateLeft,
+    currentTetromino,
+    calcIfPossibleMove,
+    previousIsRotateLeft,
+  ]);
+
+  // _____________ROTATE RIGHT
+  useEffect(() => {
+    if (!previousIsRotateRight && isRotateRight) {
+      // Rotate right => no offsets, but new blocks ! (after rotation)
+      // Note : 5 === +1 + 4 : always positive values for mod operator
+      const newRotation = (currentTetromino.rotation + 5) % 4;
+      const rotatedBlocks = _shapeToBlocks[currentTetromino.shape][newRotation];
+      const isPossibleMove = calcIfPossibleMove(0, 0, rotatedBlocks);
+      if (isPossibleMove) dispatch({ type: "CURRENT_TETROMINO/ROTATE_RIGHT" });
+    }
+  }, [
+    dispatch,
+    isRotateRight,
+    currentTetromino,
+    calcIfPossibleMove,
+    previousIsRotateRight,
+  ]);
+
+  // Nothing to return, no render
+  return null;
 };
 
 export default CurrentTetromino;

@@ -6,6 +6,7 @@ import intitialState from "../../reducers/initialState";
 
 // Components
 import Grid from "./Grid/Grid";
+import StackedBlocks from "./StackedBlocks/StackedBlocks";
 import CurrentTetromino from "./CurrentTetromino/CurrentTetromino";
 
 // Styles
@@ -25,6 +26,7 @@ const Game = () => {
     <GameContext.Provider value={{ game, dispatch }}>
       <div className={classes.container}>
         <Grid />
+        <StackedBlocks />
         <CurrentTetromino />
       </div>
     </GameContext.Provider>
