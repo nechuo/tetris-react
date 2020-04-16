@@ -33,12 +33,9 @@ const useKeyboardKeys = ({
     if (match(event, leftKey)) setIsLeft(isKeyDown ? !isLeft : false);
     if (match(event, downKey)) setIsDown(isKeyDown ? !isDown : false);
     if (match(event, rightKey)) setIsRight(isKeyDown ? !isRight : false);
-
-    if (match(event, rotateLeftKey))
-      setIsRotateLeft(isKeyDown ? !isRotateLeft : false);
-
+    if (match(event, rotateLeftKey)) setIsRotateLeft(isKeyDown ? true : false);
     if (match(event, rotateRightKey))
-      setIsRotateRight(isKeyDown ? !isRotateRight : false);
+      setIsRotateRight(isKeyDown ? true : false);
   };
 
   // Bind and unbind events
@@ -51,7 +48,14 @@ const useKeyboardKeys = ({
     };
   });
 
-  return { isLeft, isRight, isUp, isDown, isRotateLeft, isRotateRight };
+  return {
+    isLeft,
+    isRight,
+    isUp,
+    isDown,
+    isRotateLeft,
+    isRotateRight,
+  };
 };
 
 export default useKeyboardKeys;

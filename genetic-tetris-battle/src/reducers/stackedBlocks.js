@@ -6,9 +6,16 @@ export const initialState = [];
  */
 const stackedBlocks = (state, action) => {
   switch (action.type) {
-    case "STACKED_BLOCKS/STACK_TETROMINO":
-      // The action data must contain the 4 blocks coordinates + colors to stack
-      return state.concat(action.blocksToStack);
+    case "STACKED_BLOCKS/STACK_TETROMINO": {
+      // Stack the current tetromino blocks in the grid
+      const blocksToStack = action.currentTetromino.blocks.map((block) => ({
+        x: block.x + action.currentTetromino.xOffset, // Stacked blocks coordinates
+        y: block.y + action.currentTetromino.yOffset, // include offsets
+        shape: action.currentTetromino.shape, // + Also remember shape
+      }));
+      // The blocks to stack must contain the 4 blocks coordinates + shape
+      return state.concat(blocksToStack);
+    }
 
     case "STACKED_BLOCKS/CLEAR_LINES": {
       // The action data must contain the lines yCoordinates to clean
@@ -19,16 +26,15 @@ const stackedBlocks = (state, action) => {
 
       // Move down all remaining stacked block
       newState.forEach((stackedBlock) => {
-        // TODO calculate offset to add; bug !!!
-        if (action.linesToClean.indexOf(stackedBlock.y) === -1) {
-          stackedBlock.y += action.linesToClean.length;
-        }
+        stackedBlock.y += action.linesToClean.filter(
+          (line) => line > stackedBlock.y
+        ).length;
       });
       return newState;
     }
 
-    case "STACKED_BLOCKS/RESET_STACK":
-      return [];
+    case "STACKED_BLOCKS/RESET_GAME":
+      return [...initialState];
 
     default:
       return state;

@@ -84,7 +84,7 @@ const Grid = () => {
         className={classes.grid}
         style={{
           height: (grid.nbVerticalBlocks + 1) * 40,
-          width: (grid.nbHorizontalBlocks + 0.5) * 40,
+          width: (grid.nbHorizontalBlocks + 0.25) * 40,
         }}
       >
         {renderGrid()}

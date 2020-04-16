@@ -42,6 +42,22 @@ const StackedBlocks = () => {
     }
   }, [memoizedLinesToClean, dispatch]);
 
+  // Reset game if lost
+  useEffect(() => {
+    const firstLineStackedBlocksXCoord = stackedBlocks
+      .filter((block) => block.y === 0)
+      .map((block) => block.x);
+
+    if (
+      firstLineStackedBlocksXCoord.length !==
+      new Set(firstLineStackedBlocksXCoord).size
+    ) {
+      dispatch({
+        type: "STACKED_BLOCKS/RESET_GAME",
+      });
+    }
+  });
+
   // Nothing to return, no render
   return null;
 };

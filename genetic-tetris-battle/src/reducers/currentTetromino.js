@@ -73,6 +73,10 @@ const currentTetromino = (state, action) => {
         blocks: _shapeToBlocks[newShape][0],
       };
     }
+
+    case "STACKED_BLOCKS/RESET_GAME":
+      return { ...initialState };
+
     default:
       return state;
   }
