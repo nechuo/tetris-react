@@ -189,9 +189,9 @@ const CurrentTetromino = () => {
                 key={index}
                 className={classes.tetromino}
                 style={{
+                  top: (currentTetromino.yOffset + block.y) * 50 + 4,
+                  left: (currentTetromino.xOffset + block.x) * 50,
                   backgroundColor: _shapeToColor[currentTetromino.shape],
-                  top: (currentTetromino.yOffset + block.y) * 40 + 4,
-                  left: (currentTetromino.xOffset + block.x) * 40 + 1,
                 }}
               ></div>
             );

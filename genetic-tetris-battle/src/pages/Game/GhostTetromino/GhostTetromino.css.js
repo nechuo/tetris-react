@@ -6,9 +6,9 @@ const styles = {
     position: "absolute",
   }),
   tetromino: {
-    width: 39,
-    height: 39,
-    opacity: 0.2,
+    width: 50,
+    height: 50,
+    opacity: 0.4,
     position: "absolute",
     boxShadow: "inset 0px 0px 3px 1px rgba(0,0,0,0.8)",
     MozBoxShadow: "inset 0px 0px 3px 1px rgba(0,0,0,0.8)",
@@ -18,8 +18,8 @@ const styles = {
     ...theme.container,
     marginTop: 60,
     position: "relative",
-    height: grid.nbVerticalBlocks * 40,
-    width: grid.nbHorizontalBlocks * 40,
+    height: grid.nbVerticalBlocks * 50,
+    width: grid.nbHorizontalBlocks * 50,
   }),
 };
 

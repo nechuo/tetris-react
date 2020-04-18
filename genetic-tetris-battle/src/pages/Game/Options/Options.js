@@ -24,21 +24,25 @@ const Options = () => {
   // Methods
   const handleChangeNbHorizontalBlocks = useCallback(
     (newValue) => {
-      dispatch({
-        type: "GRID/CHANGE_NB_HORIZONTAL_BLOCKS",
-        nbHorizontalBlocks: newValue,
-      });
+      newValue >= 10 &&
+        newValue <= 250 &&
+        dispatch({
+          type: "GRID/CHANGE_NB_HORIZONTAL_BLOCKS",
+          nbHorizontalBlocks: newValue,
+        });
     },
     [dispatch]
   );
 
   const handleChangeNbVerticalBlocks = useCallback(
     (newValue) => {
-      dispatch({
-        type: "GRID/CHANGE_NB_VERTICAL_BLOCKS",
-        nbVerticalBlocks: newValue,
-        nbHorizontalBlocks: grid.nbHorizontalBlocks,
-      });
+      newValue >= 10 &&
+        newValue <= 125 &&
+        dispatch({
+          type: "GRID/CHANGE_NB_VERTICAL_BLOCKS",
+          nbVerticalBlocks: newValue,
+          nbHorizontalBlocks: grid.nbHorizontalBlocks,
+        });
     },
     [dispatch, grid.nbHorizontalBlocks]
   );
@@ -55,6 +59,7 @@ const Options = () => {
             max={125}
             value={grid.nbVerticalBlocks}
             onChange={handleChangeNbVerticalBlocks}
+            onPressEnter={handleChangeNbVerticalBlocks}
           />
         </div>
         <div style={{ marginTop: 15 }}>
@@ -66,6 +71,7 @@ const Options = () => {
             max={250}
             value={grid.nbHorizontalBlocks}
             onChange={handleChangeNbHorizontalBlocks}
+            onPressEnter={handleChangeNbHorizontalBlocks}
           />
         </div>
       </div>

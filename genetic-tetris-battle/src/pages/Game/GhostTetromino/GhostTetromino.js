@@ -55,24 +55,28 @@ const GhostTetromino = () => {
     return currentTetromino.yOffset + newYOffset - 1;
   };
 
+  const ghostOffset = calcGhostYOffset();
+
   // Render
   return (
     <div className={classes.container}>
-      <div className={classes.grid}>
-        {currentTetromino.blocks.map((block, index) => {
-          return (
-            <div
-              key={index}
-              className={classes.tetromino}
-              style={{
-                backgroundColor: _shapeToColor[currentTetromino.shape],
-                left: (currentTetromino.xOffset + block.x) * 40 + 1,
-                top: (calcGhostYOffset() + block.y) * 40 + 4,
-              }}
-            ></div>
-          );
-        })}
-      </div>
+      {ghostOffset >= 2 && ( // do not draw the ghost tetromino if there is not any remaining place due to the stacked blocks (or, in other words, if you are going to lose !)
+        <div className={classes.grid}>
+          {currentTetromino.blocks.map((block, index) => {
+            return (
+              <div
+                key={index}
+                className={classes.tetromino}
+                style={{
+                  top: (ghostOffset + block.y) * 50 + 4,
+                  left: (currentTetromino.xOffset + block.x) * 50,
+                  backgroundColor: _shapeToColor[currentTetromino.shape],
+                }}
+              ></div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };

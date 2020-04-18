@@ -30,7 +30,7 @@ export const initialState = {
   yOffset: 0, // Top of the grid
   tetrominosBag: initialTetrominosBag,
   blocks: _shapeToBlocks[initialShape][0],
-  xOffset: gridInitialState.nbHorizontalBlocks / 2 - 1, // Horizontally centered
+  xOffset: Math.floor(gridInitialState.nbHorizontalBlocks / 2) - 1, // Horizontally centered
 };
 
 /**
@@ -66,9 +66,8 @@ const currentTetromino = (state, action) => {
       const shape = tetrominosBag.pop();
 
       return {
+        ...initialState,
         shape,
-        yOffset: 0,
-        rotation: 0,
         tetrominosBag,
         blocks: _shapeToBlocks[shape][0],
         xOffset: Math.floor(action.nbHorizontalBlocks / 2) - 1,
@@ -80,10 +79,10 @@ const currentTetromino = (state, action) => {
     case "STACKED_BLOCKS/RESET_GAME": {
       const tetrominosBag = shuffle(Object.keys(TETROMINO_SHAPE_ENUM));
       const shape = tetrominosBag.pop();
+
       return {
+        ...initialState,
         shape,
-        yOffset: 0,
-        rotation: 0,
         tetrominosBag,
         blocks: _shapeToBlocks[shape][0],
         xOffset: Math.floor(action.nbHorizontalBlocks / 2) - 1,

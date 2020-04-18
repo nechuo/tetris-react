@@ -3,12 +3,12 @@ const styles = {
   grid: ({ theme, grid }) => ({
     ...theme.container,
     marginTop: 60,
-    border: "3px solid #222222",
-    backgroundSize: "40px 40px",
-    height: grid.nbVerticalBlocks * 40 + 9,
-    width: grid.nbHorizontalBlocks * 40 + 9,
+    border: "3px solid #333",
+    backgroundSize: "50px 50px",
+    height: grid.nbVerticalBlocks * 50 + 9,
+    width: grid.nbHorizontalBlocks * 50 + 9,
     backgroundImage:
-      "repeating-linear-gradient(#111111 0 3px, transparent 0px 100%), repeating-linear-gradient(90deg, #111111 0 3px, transparent 0px 100%)",
+      "repeating-linear-gradient(#222 0 3px, transparent 0px 100%), repeating-linear-gradient(90deg, #222 0 3px, transparent 0px 100%)",
   }),
 };
 

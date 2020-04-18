@@ -56,21 +56,28 @@ const StackedBlocks = () => {
 
   // Reset game if lost
   useEffect(() => {
-    const firstLineStackedBlocksXCoord = stackedBlocks
-      .filter((block) => block.y === 0)
-      .map((block) => block.x);
+    // Only check the top 2 lines of the grid, tetrominos spanws are 2 blocks tall (given the default rotations)
+    // A game is lost when there is a collsiion between two stacked blocks
+    const firstLinesStackedBlocks = stackedBlocks.filter(
+      (block) => block.y >= 0 && block.y < 2
+    );
 
-    if (
-      firstLineStackedBlocksXCoord.length !==
-      new Set(firstLineStackedBlocksXCoord).size
-    ) {
+    // Check if the stacked block below overlap (at least one)
+    const reducedDuplicates = firstLinesStackedBlocks.reduce(
+      (result, current) =>
+        result.find((block) => block.x === current.x && block.y === current.y)
+          ? result
+          : [...result, current],
+      []
+    );
+    if (reducedDuplicates.length !== firstLinesStackedBlocks.length)
       dispatch({
         type: "STACKED_BLOCKS/RESET_GAME",
+        nbHorizontalBlocks: grid.nbHorizontalBlocks, // Use to position the next tetromino xOffset
       });
-    }
-  });
+  }, [dispatch, grid, stackedBlocks]);
 
-  // Nothing to return, no render
+  // Render stacked blocks
   return useMemo(
     () => (
       <div className={classes.container}>
@@ -81,9 +88,9 @@ const StackedBlocks = () => {
                 key={index}
                 className={classes.stackedBlock}
                 style={{
+                  top: block.y * 50 + 3,
+                  left: block.x * 50 + 1,
                   backgroundColor: _shapeToColor[block.shape],
-                  top: block.y * 40 + 3,
-                  left: block.x * 40 + 1,
                 }}
               ></div>
             );
