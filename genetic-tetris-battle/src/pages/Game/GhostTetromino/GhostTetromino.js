@@ -63,13 +63,20 @@ const GhostTetromino = () => {
       {ghostOffset >= 2 && ( // do not draw the ghost tetromino if there is not any remaining place due to the stacked blocks (or, in other words, if you are going to lose !)
         <div className={classes.grid}>
           {currentTetromino.blocks.map((block, index) => {
+            // Top absolute offset in px
+            const top = (ghostOffset + block.y) * gridConfig.blockSize + 4;
+
+            // Left absolute offset in px
+            const left =
+              (currentTetromino.xOffset + block.x) * gridConfig.blockSize + 1;
+
             return (
               <div
                 key={index}
                 className={classes.tetromino}
                 style={{
-                  top: (ghostOffset + block.y) * 50 + 4,
-                  left: (currentTetromino.xOffset + block.x) * 50,
+                  top,
+                  left,
                   backgroundColor: _shapeToColor[currentTetromino.shape],
                 }}
               ></div>

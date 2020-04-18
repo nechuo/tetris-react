@@ -74,8 +74,8 @@ const currentTetromino = (state, action) => {
       };
     }
 
-    case "GRID/CHANGE_NB_VERTICAL_BLOCKS":
-    case "GRID/CHANGE_NB_HORIZONTAL_BLOCKS":
+    case "GRID_CONFIG/CHANGE_NB_VERTICAL_BLOCKS":
+    case "GRID_CONFIG/CHANGE_NB_HORIZONTAL_BLOCKS":
     case "STACKED_BLOCKS/RESET_GAME": {
       const tetrominosBag = shuffle(Object.keys(TETROMINO_SHAPE_ENUM));
       const shape = tetrominosBag.pop();

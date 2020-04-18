@@ -5,21 +5,21 @@ const styles = {
     left: 0,
     position: "absolute",
   }),
-  tetromino: {
-    width: 50,
-    height: 50,
-    opacity: 0.4,
+  tetromino: ({ gridConfig }) => ({
+    width: gridConfig.blockSize,
+    height: gridConfig.blockSize,
+    opacity: 0.2,
     position: "absolute",
     boxShadow: "inset 0px 0px 3px 1px rgba(0,0,0,0.8)",
     MozBoxShadow: "inset 0px 0px 3px 1px rgba(0,0,0,0.8)",
     WebkitBoxShadow: "inset 0px 0px 3px 1px rgba(0,0,0,0.8)",
-  },
+  }),
   grid: ({ theme, gridConfig }) => ({
     ...theme.container,
     marginTop: 60,
     position: "relative",
-    height: gridConfig.nbVerticalBlocks * 50,
-    width: gridConfig.nbHorizontalBlocks * 50,
+    height: gridConfig.nbVerticalBlocks * gridConfig.blockSize,
+    width: gridConfig.nbHorizontalBlocks * gridConfig.blockSize,
   }),
 };
 

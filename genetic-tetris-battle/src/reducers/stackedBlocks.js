@@ -34,8 +34,8 @@ const stackedBlocks = (state, action) => {
     }
 
     case "STACKED_BLOCKS/RESET_GAME":
-    case "GRID/CHANGE_NB_VERTICAL_BLOCKS":
-    case "GRID/CHANGE_NB_HORIZONTAL_BLOCKS":
+    case "GRID_CONFIG/CHANGE_NB_VERTICAL_BLOCKS":
+    case "GRID_CONFIG/CHANGE_NB_HORIZONTAL_BLOCKS":
       return [];
 
     default:

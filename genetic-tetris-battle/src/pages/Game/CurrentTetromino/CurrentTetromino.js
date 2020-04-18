@@ -198,22 +198,30 @@ const CurrentTetromino = () => {
       <div className={classes.container}>
         <div className={classes.grid}>
           {currentTetromino.blocks.map((block, index) => {
+            // Top absolute offset in px
+            const top =
+              (currentTetromino.yOffset + block.y) * gridConfig.blockSize + 4;
+
+            // Left absolute offset in px
+            const left =
+              (currentTetromino.xOffset + block.x) * gridConfig.blockSize + 1;
+
             return (
               <div
                 key={index}
                 className={classes.tetromino}
                 style={{
-                  top: (currentTetromino.yOffset + block.y) * 50 + 4,
-                  left: (currentTetromino.xOffset + block.x) * 50,
+                  top,
+                  left,
                   backgroundColor: _shapeToColor[currentTetromino.shape],
                 }}
-              ></div>
+              />
             );
           })}
         </div>
       </div>
     ),
-    [classes, currentTetromino]
+    [classes, currentTetromino, gridConfig.blockSize]
   );
 };
 

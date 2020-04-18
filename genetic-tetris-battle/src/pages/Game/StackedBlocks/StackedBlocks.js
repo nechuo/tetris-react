@@ -88,8 +88,8 @@ const StackedBlocks = () => {
                 key={index}
                 className={classes.stackedBlock}
                 style={{
-                  top: block.y * 50 + 3,
-                  left: block.x * 50 + 1,
+                  top: block.y * gridConfig.blockSize + 3,
+                  left: block.x * gridConfig.blockSize + 1,
                   backgroundColor: _shapeToColor[block.shape],
                 }}
               ></div>
@@ -98,7 +98,7 @@ const StackedBlocks = () => {
         </div>
       </div>
     ),
-    [classes, stackedBlocks]
+    [classes, stackedBlocks, gridConfig.blockSize]
   );
 };
 
