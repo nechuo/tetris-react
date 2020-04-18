@@ -19,13 +19,13 @@ const useStyles = createUseStyles(styles);
 const StackedBlocks = () => {
   // Context data
   const {
-    game: { stackedBlocks, grid },
+    game: { stackedBlocks, gridConfig },
     dispatch,
   } = useContext(GameContext);
 
   // Styles
   const theme = useTheme();
-  const classes = useStyles({ theme, grid });
+  const classes = useStyles({ theme, gridConfig });
 
   /**
    * Calculate all the lines to clean (completed lines).
@@ -33,15 +33,15 @@ const StackedBlocks = () => {
    */
   const memoizedLinesToClean = useMemo(() => {
     const linesToClean = [];
-    for (let line = 0; line < grid.nbVerticalBlocks; line++) {
+    for (let line = 0; line < gridConfig.nbVerticalBlocks; line++) {
       // All stacked blocks on the current line
       const blocksOnLine = stackedBlocks.filter((block) => block.y === line);
-      if (blocksOnLine.length === grid.nbHorizontalBlocks)
+      if (blocksOnLine.length === gridConfig.nbHorizontalBlocks)
         // If the line is full of stacked blocks
         linesToClean.push(line);
     }
     return linesToClean;
-  }, [stackedBlocks, grid]);
+  }, [stackedBlocks, gridConfig]);
 
   // Clear lines of needed
   useEffect(() => {
@@ -73,9 +73,9 @@ const StackedBlocks = () => {
     if (reducedDuplicates.length !== firstLinesStackedBlocks.length)
       dispatch({
         type: "STACKED_BLOCKS/RESET_GAME",
-        nbHorizontalBlocks: grid.nbHorizontalBlocks, // Use to position the next tetromino xOffset
+        nbHorizontalBlocks: gridConfig.nbHorizontalBlocks, // Use to position the next tetromino xOffset
       });
-  }, [dispatch, grid, stackedBlocks]);
+  }, [dispatch, gridConfig, stackedBlocks]);
 
   // Render stacked blocks
   return useMemo(

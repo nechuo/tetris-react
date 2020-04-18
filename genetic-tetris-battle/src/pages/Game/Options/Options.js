@@ -17,7 +17,7 @@ const Options = () => {
 
   // Context data
   const {
-    game: { grid },
+    game: { gridConfig },
     dispatch,
   } = useContext(GameContext);
 
@@ -41,10 +41,10 @@ const Options = () => {
         dispatch({
           type: "GRID/CHANGE_NB_VERTICAL_BLOCKS",
           nbVerticalBlocks: newValue,
-          nbHorizontalBlocks: grid.nbHorizontalBlocks,
+          nbHorizontalBlocks: gridConfig.nbHorizontalBlocks,
         });
     },
-    [dispatch, grid.nbHorizontalBlocks]
+    [dispatch, gridConfig.nbHorizontalBlocks]
   );
 
   return useMemo(
@@ -57,7 +57,7 @@ const Options = () => {
           <InputNumber
             min={10}
             max={125}
-            value={grid.nbVerticalBlocks}
+            value={gridConfig.nbVerticalBlocks}
             onChange={handleChangeNbVerticalBlocks}
             onPressEnter={handleChangeNbVerticalBlocks}
           />
@@ -69,7 +69,7 @@ const Options = () => {
           <InputNumber
             min={10}
             max={250}
-            value={grid.nbHorizontalBlocks}
+            value={gridConfig.nbHorizontalBlocks}
             onChange={handleChangeNbHorizontalBlocks}
             onPressEnter={handleChangeNbHorizontalBlocks}
           />
@@ -77,8 +77,8 @@ const Options = () => {
       </div>
     ),
     [
-      grid,
       classes,
+      gridConfig,
       handleChangeNbVerticalBlocks,
       handleChangeNbHorizontalBlocks,
     ]

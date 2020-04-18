@@ -13,12 +13,12 @@ const styles = {
     MozBoxShadow: "inset 0px 0px 3px 1px rgba(0,0,0,0.8)",
     WebkitBoxShadow: "inset 0px 0px 3px 1px rgba(0,0,0,0.8)",
   },
-  grid: ({ theme, grid }) => ({
+  grid: ({ theme, gridConfig }) => ({
     ...theme.container,
     marginTop: 60,
     position: "relative",
-    height: grid.nbVerticalBlocks * 50,
-    width: grid.nbHorizontalBlocks * 50,
+    height: gridConfig.nbVerticalBlocks * 50,
+    width: gridConfig.nbHorizontalBlocks * 50,
   }),
 };
 

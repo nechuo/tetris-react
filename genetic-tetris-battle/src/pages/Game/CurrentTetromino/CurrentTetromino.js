@@ -27,13 +27,13 @@ const useStyles = createUseStyles(styles);
 const CurrentTetromino = () => {
   // Context data
   const {
-    game: { currentTetromino, stackedBlocks, grid },
+    game: { currentTetromino, stackedBlocks, gridConfig },
     dispatch,
   } = useContext(GameContext);
 
   // Styles
   const theme = useTheme();
-  const classes = useStyles({ theme, grid });
+  const classes = useStyles({ theme, gridConfig });
 
   // Keyboard keys state
   const {
@@ -80,11 +80,11 @@ const CurrentTetromino = () => {
         stackedBlocks,
         currentTetromino,
         newTetrominoBlocks,
-        nbVerticalBlocks: grid.nbVerticalBlocks,
-        nbHorizontalBlocks: grid.nbHorizontalBlocks,
+        nbVerticalBlocks: gridConfig.nbVerticalBlocks,
+        nbHorizontalBlocks: gridConfig.nbHorizontalBlocks,
       }),
 
-    [currentTetromino, stackedBlocks, grid]
+    [currentTetromino, stackedBlocks, gridConfig]
   );
 
   //=======================
@@ -99,14 +99,21 @@ const CurrentTetromino = () => {
       while (checkNewMove(0, newYOffset)) newYOffset++;
       dispatch({
         type: "STACKED_BLOCKS/STACK_TETROMINO",
-        nbHorizontalBlocks: grid.nbHorizontalBlocks,
+        nbHorizontalBlocks: gridConfig.nbHorizontalBlocks,
         currentTetromino: {
           ...currentTetromino,
           yOffset: currentTetromino.yOffset + newYOffset - 1,
         },
       });
     }
-  }, [isUp, grid, dispatch, checkNewMove, previousIsUp, currentTetromino]);
+  }, [
+    isUp,
+    dispatch,
+    gridConfig,
+    checkNewMove,
+    previousIsUp,
+    currentTetromino,
+  ]);
 
   // _____________MOVE DOWN
   useEffect(() => {
@@ -119,11 +126,18 @@ const CurrentTetromino = () => {
         dispatch({
           type: "STACKED_BLOCKS/STACK_TETROMINO",
           currentTetromino,
-          nbHorizontalBlocks: grid.nbHorizontalBlocks,
+          nbHorizontalBlocks: gridConfig.nbHorizontalBlocks,
         });
       }
     }
-  }, [grid, isDown, dispatch, checkNewMove, previousIsDown, currentTetromino]);
+  }, [
+    isDown,
+    dispatch,
+    gridConfig,
+    checkNewMove,
+    previousIsDown,
+    currentTetromino,
+  ]);
 
   // ____________MOVE LEFT
   useEffect(() => {

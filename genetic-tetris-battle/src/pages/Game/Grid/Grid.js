@@ -11,12 +11,12 @@ const useStyles = createUseStyles(styles);
 const Grid = () => {
   // Context data
   const {
-    game: { grid },
+    game: { gridConfig },
   } = useContext(GameContext);
 
   // Styles
   const theme = useTheme();
-  const classes = useStyles({ theme, grid });
+  const classes = useStyles({ theme, gridConfig });
 
   // Render
   return useMemo(

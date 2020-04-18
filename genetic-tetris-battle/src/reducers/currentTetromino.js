@@ -3,7 +3,7 @@ import TETROMINO_SHAPE_ENUM from "../enums/tetrominoShapeEnum";
 
 // Constants
 import _shapeToBlocks from "../constants/shapeToBlocks";
-import { initialState as gridInitialState } from "./grid";
+import { initialState as gridInitialState } from "./gridConfig";
 
 /**
  * Shuffles array in place.

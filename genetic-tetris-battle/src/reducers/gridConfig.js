@@ -5,9 +5,9 @@ export const initialState = {
 };
 
 /**
- * Reducer for the tetris grid
+ * Reducer for the tetris grid configuration
  */
-const grid = (state, action) => {
+const gridConfig = (state, action) => {
   switch (action.type) {
     case "GRID/CHANGE_NB_VERTICAL_BLOCKS":
       return { ...state, nbVerticalBlocks: action.nbVerticalBlocks };
@@ -18,4 +18,4 @@ const grid = (state, action) => {
   }
 };
 
-export default grid;
+export default gridConfig;

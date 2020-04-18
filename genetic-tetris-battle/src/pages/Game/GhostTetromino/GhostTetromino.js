@@ -17,12 +17,12 @@ const useStyles = createUseStyles(styles);
 const GhostTetromino = () => {
   // Context Data
   const {
-    game: { currentTetromino, stackedBlocks, grid },
+    game: { currentTetromino, stackedBlocks, gridConfig },
   } = useContext(GameContext);
 
   // Styles
   const theme = useTheme();
-  const classes = useStyles({ theme, grid });
+  const classes = useStyles({ theme, gridConfig });
 
   // Methods
 
@@ -46,8 +46,8 @@ const GhostTetromino = () => {
         newYOffset,
         stackedBlocks,
         currentTetromino,
-        nbVerticalBlocks: grid.nbVerticalBlocks,
-        nbHorizontalBlocks: grid.nbHorizontalBlocks,
+        nbVerticalBlocks: gridConfig.nbVerticalBlocks,
+        nbHorizontalBlocks: gridConfig.nbHorizontalBlocks,
       })
     ) {
       newYOffset++;
