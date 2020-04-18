@@ -10,6 +10,7 @@ import intitialState from "../../reducers/initialState";
 // Components
 import Grid from "./Grid/Grid";
 import StackedBlocks from "./StackedBlocks/StackedBlocks";
+import GhostTetromino from "./GhostTetromino/GhostTetromino";
 import CurrentTetromino from "./CurrentTetromino/CurrentTetromino";
 
 // Styles
@@ -66,6 +67,7 @@ const Game = () => {
         </div>
         <Grid />
         <StackedBlocks />
+        <GhostTetromino />
         <CurrentTetromino />
       </div>
     </GameContext.Provider>
