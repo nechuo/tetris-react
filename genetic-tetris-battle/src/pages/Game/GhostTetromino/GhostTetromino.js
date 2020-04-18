@@ -66,7 +66,7 @@ const GhostTetromino = () => {
               className={classes.tetromino}
               style={{
                 backgroundColor: _shapeToColor[currentTetromino.shape],
-                left: (currentTetromino.xOffset + block.x) * 40 + 2,
+                left: (currentTetromino.xOffset + block.x) * 40 + 1,
                 top: (calcGhostYOffset() + block.y) * 40 + 4,
               }}
             ></div>

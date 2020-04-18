@@ -191,7 +191,7 @@ const CurrentTetromino = () => {
                 style={{
                   backgroundColor: _shapeToColor[currentTetromino.shape],
                   top: (currentTetromino.yOffset + block.y) * 40 + 4,
-                  left: (currentTetromino.xOffset + block.x) * 40 + 2,
+                  left: (currentTetromino.xOffset + block.x) * 40 + 1,
                 }}
               ></div>
             );

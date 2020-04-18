@@ -63,22 +63,32 @@ const currentTetromino = (state, action) => {
         state.tetrominosBag.length > 0
           ? state.tetrominosBag
           : shuffle(Object.keys(TETROMINO_SHAPE_ENUM));
-      const newShape = tetrominosBag.pop();
+      const shape = tetrominosBag.pop();
 
       return {
-        ...state,
+        shape,
         yOffset: 0,
         rotation: 0,
         tetrominosBag,
-        shape: newShape,
-        blocks: _shapeToBlocks[newShape][0],
-        xOffset: action.nbHorizontalBlocks / 2 - 1,
+        blocks: _shapeToBlocks[shape][0],
+        xOffset: Math.floor(action.nbHorizontalBlocks / 2) - 1,
       };
     }
 
-    case "STACKED_BLOCKS/RESET_GAME":
-      return { ...initialState };
-
+    case "GRID/CHANGE_NB_VERTICAL_BLOCKS":
+    case "GRID/CHANGE_NB_HORIZONTAL_BLOCKS":
+    case "STACKED_BLOCKS/RESET_GAME": {
+      const tetrominosBag = shuffle(Object.keys(TETROMINO_SHAPE_ENUM));
+      const shape = tetrominosBag.pop();
+      return {
+        shape,
+        yOffset: 0,
+        rotation: 0,
+        tetrominosBag,
+        blocks: _shapeToBlocks[shape][0],
+        xOffset: Math.floor(action.nbHorizontalBlocks / 2) - 1,
+      };
+    }
     default:
       return state;
   }
