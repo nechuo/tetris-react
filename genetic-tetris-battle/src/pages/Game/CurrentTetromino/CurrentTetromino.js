@@ -1,4 +1,7 @@
-import { useContext, useEffect, useCallback } from "react";
+import React, { useContext, useEffect, useCallback, useMemo } from "react";
+
+// Constants
+import _shapeToColor from "../../../constants/shapeToColor";
 
 // Custom hooks
 //import useKeyboardKeys from "../../../customHooks/useKeyboardKeys";
@@ -8,6 +11,11 @@ import useControllerKeys from "../../../customHooks/useControllerKeys";
 // Context
 import { GameContext } from "../Game";
 import _shapeToBlocks from "../../../constants/shapeToBlocks";
+
+// Styles
+import styles from "./CurrentTetromino.css";
+import { createUseStyles, useTheme } from "react-jss";
+const useStyles = createUseStyles(styles);
 
 /**
  * Hook to manage the current tetromino logic (moves + rotations from keyboard inputs)
@@ -21,6 +29,10 @@ const CurrentTetromino = () => {
     game: { currentTetromino, stackedBlocks, grid },
     dispatch,
   } = useContext(GameContext);
+
+  // Styles
+  const theme = useTheme();
+  const classes = useStyles({ theme, grid });
 
   // Keyboard keys state
   const {
@@ -44,7 +56,7 @@ const CurrentTetromino = () => {
 
   // Setup tetromino 'gravity' (move down each 1s)
   useEffect(() => {
-    const interval = setInterval(() => setIsDown(!isDown), 800);
+    const interval = setInterval(() => setIsDown(!isDown), 50);
     return () => clearInterval(interval);
   }, [isDown, setIsDown]);
 
@@ -102,13 +114,21 @@ const CurrentTetromino = () => {
       while (calcIfPossibleMove(0, newYOffset)) newYOffset++;
       dispatch({
         type: "STACKED_BLOCKS/STACK_TETROMINO",
+        nbHorizontalBlocks: grid.nbHorizontalBlocks,
         currentTetromino: {
           ...currentTetromino,
           yOffset: currentTetromino.yOffset + newYOffset - 1,
         },
       });
     }
-  }, [isUp, previousIsUp, calcIfPossibleMove, dispatch, currentTetromino]);
+  }, [
+    isUp,
+    grid,
+    dispatch,
+    previousIsUp,
+    currentTetromino,
+    calcIfPossibleMove,
+  ]);
 
   // _____________MOVE DOWN
   useEffect(() => {
@@ -118,10 +138,21 @@ const CurrentTetromino = () => {
       if (isPossibleMove) {
         dispatch({ type: "CURRENT_TETROMINO/MOVE_DOWN" });
       } else {
-        dispatch({ type: "STACKED_BLOCKS/STACK_TETROMINO", currentTetromino });
+        dispatch({
+          type: "STACKED_BLOCKS/STACK_TETROMINO",
+          currentTetromino,
+          nbHorizontalBlocks: grid.nbHorizontalBlocks,
+        });
       }
     }
-  }, [isDown, previousIsDown, calcIfPossibleMove, dispatch, currentTetromino]);
+  }, [
+    grid,
+    isDown,
+    dispatch,
+    previousIsDown,
+    currentTetromino,
+    calcIfPossibleMove,
+  ]);
 
   // ____________MOVE LEFT
   useEffect(() => {
@@ -177,7 +208,28 @@ const CurrentTetromino = () => {
     previousIsRotateRight,
   ]);
 
-  return null;
+  return useMemo(
+    () => (
+      <div className={classes.container}>
+        <div className={classes.grid}>
+          {currentTetromino.blocks.map((block, index) => {
+            return (
+              <div
+                key={index}
+                className={classes.tetromino}
+                style={{
+                  backgroundColor: _shapeToColor[currentTetromino.shape],
+                  top: (currentTetromino.yOffset + block.y) * 40 + 3,
+                  left: (currentTetromino.xOffset + block.x) * 40 + 1,
+                }}
+              ></div>
+            );
+          })}
+        </div>
+      </div>
+    ),
+    [classes, currentTetromino]
+  );
 };
 
 export default CurrentTetromino;

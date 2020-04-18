@@ -1,7 +1,7 @@
 // Tetris grid initial state
 export const initialState = {
-  nbVerticalBlocks: 20,
-  nbHorizontalBlocks: 10,
+  nbVerticalBlocks: 130,
+  nbHorizontalBlocks: 170,
 };
 
 /**

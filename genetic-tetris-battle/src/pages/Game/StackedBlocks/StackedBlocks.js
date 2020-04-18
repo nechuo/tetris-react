@@ -1,7 +1,15 @@
-import { useContext, useEffect, useMemo } from "react";
+import React, { useContext, useEffect, useMemo } from "react";
+
+// Constants
+import _shapeToColor from "../../../constants/shapeToColor";
 
 // Context
 import { GameContext } from "../Game";
+
+// Styles
+import styles from "./StackedBlocks.css";
+import { createUseStyles, useTheme } from "react-jss";
+const useStyles = createUseStyles(styles);
 
 /**
  * Hook to manage the stacked blocks logic (clear lines when full of stacked blocks)
@@ -14,6 +22,10 @@ const StackedBlocks = () => {
     game: { stackedBlocks, grid },
     dispatch,
   } = useContext(GameContext);
+
+  // Styles
+  const theme = useTheme();
+  const classes = useStyles({ theme, grid });
 
   /**
    * Calculate all the lines to clean (completed lines).
@@ -59,7 +71,28 @@ const StackedBlocks = () => {
   });
 
   // Nothing to return, no render
-  return null;
+  return useMemo(
+    () => (
+      <div className={classes.container}>
+        <div className={classes.grid}>
+          {stackedBlocks.map((block, index) => {
+            return (
+              <div
+                key={index}
+                className={classes.stackedBlock}
+                style={{
+                  backgroundColor: _shapeToColor[block.shape],
+                  top: block.y * 40 + 3,
+                  left: block.x * 40 + 1,
+                }}
+              ></div>
+            );
+          })}
+        </div>
+      </div>
+    ),
+    [classes, stackedBlocks]
+  );
 };
 
 export default StackedBlocks;

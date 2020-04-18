@@ -3,6 +3,7 @@ import TETROMINO_SHAPE_ENUM from "../enums/tetrominoShapeEnum";
 
 // Constants
 import _shapeToBlocks from "../constants/shapeToBlocks";
+import { initialState as gridInitialState } from "./grid";
 
 /**
  * Shuffles array in place.
@@ -28,8 +29,8 @@ export const initialState = {
   rotation: 0, // from 0 to 3,
   yOffset: 0, // Top of the grid
   tetrominosBag: initialTetrominosBag,
-  xOffset: 4, // Horizontally centered
   blocks: _shapeToBlocks[initialShape][0],
+  xOffset: gridInitialState.nbHorizontalBlocks / 2 - 1, // Horizontally centered
 };
 
 /**
@@ -63,14 +64,15 @@ const currentTetromino = (state, action) => {
           ? state.tetrominosBag
           : shuffle(Object.keys(TETROMINO_SHAPE_ENUM));
       const newShape = tetrominosBag.pop();
+
       return {
         ...state,
         yOffset: 0,
-        xOffset: 4,
         rotation: 0,
         tetrominosBag,
         shape: newShape,
         blocks: _shapeToBlocks[newShape][0],
+        xOffset: action.nbHorizontalBlocks / 2 - 1,
       };
     }
 

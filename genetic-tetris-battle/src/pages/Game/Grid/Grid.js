@@ -1,7 +1,4 @@
-import React, { useContext } from "react";
-
-// Constants
-import _shapeToColor from "../../../constants/shapeToColor";
+import React, { useContext, useMemo } from "react";
 
 // Context
 import { GameContext } from "../Game";
@@ -12,84 +9,23 @@ import { createUseStyles, useTheme } from "react-jss";
 const useStyles = createUseStyles(styles);
 
 const Grid = () => {
-  // Styles
-  const theme = useTheme();
-  const classes = useStyles({ theme });
-
   // Context data
   const {
-    game: { grid, stackedBlocks, currentTetromino },
+    game: { grid },
   } = useContext(GameContext);
 
-  /**
-   * calculateGridBlockColor
-   *
-   * Each 'slot' of the grid is drawn here.
-   * If it overlaps one of the current tetromino block,
-   * then return the current tetromino color.
-   * If it overlaps a previously stack block,
-   * then return the stacked block color.
-   * Return black as the empty grid color.
-   *
-   * All the colors can ben changed in the constants
-   */
-  const calculateGridBlockColor = (gridBlockX, gridBlockY) => {
-    // Check if the current grid slot is part of the current tetromino
-    const matchTetrominoBlock = currentTetromino.blocks.find(
-      (block) =>
-        block.x + currentTetromino.xOffset === gridBlockX &&
-        block.y + currentTetromino.yOffset === gridBlockY
-    );
-
-    // Check if the current grid slot is a previously stacked block
-    const matchStackedBlock = stackedBlocks.find(
-      (block) => block.x === gridBlockX && block.y === gridBlockY
-    );
-
-    return matchTetrominoBlock != null
-      ? _shapeToColor[currentTetromino.shape] // Tetromino color
-      : matchStackedBlock != null
-      ? _shapeToColor[matchStackedBlock.shape] // Stack block color
-      : "black"; // Grid empty slock black color
-  };
-
-  /**
-   * renderGrid
-   *
-   * Render the grid's 'nbVerticalBlocks * nbHorizontalBlocks' blocks
-   * Each drawn block has a dynamic css background color.
-   * If a block belong to the current tetromino, then use its color.
-   * Same for stacked blocks
-   */
-  const renderGrid = () => {
-    const rects = [];
-    for (let y = 0; y < grid.nbVerticalBlocks; y++) {
-      for (let x = 0; x < grid.nbHorizontalBlocks; x++) {
-        rects.push(
-          <div
-            className={classes.gridRect}
-            key={y * grid.nbHorizontalBlocks + x}
-            style={{ backgroundColor: calculateGridBlockColor(x, y) }}
-          />
-        );
-      }
-    }
-    return rects;
-  };
+  // Styles
+  const theme = useTheme();
+  const classes = useStyles({ theme, grid });
 
   // Render
-  return (
-    <div className={classes.container}>
-      <div
-        className={classes.grid}
-        style={{
-          height: (grid.nbVerticalBlocks + 1) * 40,
-          width: (grid.nbHorizontalBlocks + 0.25) * 40,
-        }}
-      >
-        {renderGrid()}
+  return useMemo(
+    () => (
+      <div className={classes.container}>
+        <div className={classes.grid}></div>
       </div>
-    </div>
+    ),
+    [classes]
   );
 };
 

@@ -1,20 +1,15 @@
 const styles = {
   container: ({ theme }) => theme.container,
-  grid: ({ theme }) => ({
+  grid: ({ theme, grid }) => ({
     ...theme.container,
     marginTop: 60,
-    border: "2px solid #888888",
+    border: "3px solid #222222",
+    backgroundSize: "40px 40px",
+    height: grid.nbVerticalBlocks * 40 + 4,
+    width: grid.nbHorizontalBlocks * 40 + 4,
+    backgroundImage:
+      "repeating-linear-gradient(#111111 0 3px, transparent 0px 100%), repeating-linear-gradient(90deg, #111111 0 3px, transparent 0px 100%)",
   }),
-  gridRect: {
-    width: 40,
-    height: 40,
-    backgroundColor: "black",
-    borderTop: "1px solid #666666",
-    borderLeft: "1px solid #666666",
-    WebkitBoxShadow: "inset 0px 0px 3px 1px rgba(0,0,0,0.8)",
-    MozBoxShadow: "inset 0px 0px 3px 1px rgba(0,0,0,0.8)",
-    boxShadow: "inset 0px 0px 3px 1px rgba(0,0,0,0.8)",
-  },
 };
 
 export default styles;

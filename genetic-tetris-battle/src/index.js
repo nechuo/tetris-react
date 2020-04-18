@@ -5,6 +5,7 @@ import ReactDOM from "react-dom";
 import Game from "./pages/Game/Game";
 
 //  Styles
+import "antd/dist/antd.css";
 import styles from "./index.css";
 import theme from "./assets/css/theme";
 import { ThemeProvider, createUseStyles } from "react-jss";
