@@ -80,22 +80,20 @@ const StackedBlocks = () => {
   // Render stacked blocks
   return useMemo(
     () => (
-      <div className={classes.container}>
-        <div className={classes.grid}>
-          {stackedBlocks.map((block, index) => {
-            return (
-              <div
-                key={index}
-                className={classes.stackedBlock}
-                style={{
-                  top: block.y * gridConfig.blockSize + 3,
-                  left: block.x * gridConfig.blockSize + 1,
-                  backgroundColor: _shapeToColor[block.shape],
-                }}
-              ></div>
-            );
-          })}
-        </div>
+      <div className={classes.stackedBlocks}>
+        {stackedBlocks.map((block, index) => {
+          return (
+            <div
+              key={index}
+              className={classes.stackedBlock}
+              style={{
+                top: block.y * gridConfig.blockSize + 3,
+                left: block.x * gridConfig.blockSize + 1,
+                backgroundColor: _shapeToColor[block.shape],
+              }}
+            ></div>
+          );
+        })}
       </div>
     ),
     [classes, stackedBlocks, gridConfig.blockSize]

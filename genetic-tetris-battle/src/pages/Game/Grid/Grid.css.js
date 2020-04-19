@@ -1,5 +1,4 @@
 const styles = {
-  container: ({ theme }) => theme.container,
   grid: ({ theme, gridConfig }) => ({
     ...theme.container,
     marginTop: 60,

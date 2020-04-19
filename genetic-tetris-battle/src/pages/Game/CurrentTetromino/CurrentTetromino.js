@@ -195,30 +195,28 @@ const CurrentTetromino = () => {
 
   return useMemo(
     () => (
-      <div className={classes.container}>
-        <div className={classes.grid}>
-          {currentTetromino.blocks.map((block, index) => {
-            // Top absolute offset in px
-            const top =
-              (currentTetromino.yOffset + block.y) * gridConfig.blockSize + 4;
+      <div className={classes.currentTetromino}>
+        {currentTetromino.blocks.map((block, index) => {
+          // Top absolute offset in px
+          const top =
+            (currentTetromino.yOffset + block.y) * gridConfig.blockSize + 4;
 
-            // Left absolute offset in px
-            const left =
-              (currentTetromino.xOffset + block.x) * gridConfig.blockSize + 1;
+          // Left absolute offset in px
+          const left =
+            (currentTetromino.xOffset + block.x) * gridConfig.blockSize + 1;
 
-            return (
-              <div
-                key={index}
-                className={classes.tetromino}
-                style={{
-                  top,
-                  left,
-                  backgroundColor: _shapeToColor[currentTetromino.shape],
-                }}
-              />
-            );
-          })}
-        </div>
+          return (
+            <div
+              key={index}
+              className={classes.tetromino}
+              style={{
+                top,
+                left,
+                backgroundColor: _shapeToColor[currentTetromino.shape],
+              }}
+            />
+          );
+        })}
       </div>
     ),
     [classes, currentTetromino, gridConfig.blockSize]

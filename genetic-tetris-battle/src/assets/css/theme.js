@@ -5,6 +5,7 @@ const theme = {
     display: "flex",
     flexWrap: "wrap",
     justifyContent: "center",
+    backgroundColor: "#000000",
   },
 };
 

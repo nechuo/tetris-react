@@ -19,14 +19,7 @@ const Grid = () => {
   const classes = useStyles({ theme, gridConfig });
 
   // Render
-  return useMemo(
-    () => (
-      <div className={classes.container}>
-        <div className={classes.grid}></div>
-      </div>
-    ),
-    [classes]
-  );
+  return useMemo(() => <div className={classes.grid}></div>, [classes]);
 };
 
 export default Grid;

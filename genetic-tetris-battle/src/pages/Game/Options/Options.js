@@ -70,9 +70,9 @@ const Options = () => {
    */
   const renderPopoverContent = useMemo(
     () => (
-      <div className={classes.options}>
+      <div className={classes.optionsWrapper}>
         <div className={classes.optionWrapper}>
-          <span className={classes}>
+          <span className={classes.optionLabel}>
             {`Change nb of vertical blocks (from ${MIN_VERTICAL_BLOCKS} to ${MAX_VERTICAL_BLOCKS}): `}
           </span>
           <InputNumber
@@ -120,7 +120,7 @@ const Options = () => {
 
   return useMemo(
     () => (
-      <div className={classes.container}>
+      <div className={classes.options}>
         <Popover
           trigger="click"
           placement="bottomLeft"

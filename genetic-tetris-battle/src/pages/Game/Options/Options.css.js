@@ -1,5 +1,5 @@
 const styles = {
-  container: {
+  options: {
     "& .ant-btn": {
       color: "white !important",
       backgroundColor: "black !important",
@@ -11,7 +11,7 @@ const styles = {
     zIndex: 999,
     position: "absolute",
   },
-  options: {
+  optionsWrapper: {
     width: 411,
     display: "flex",
     marginRight: 16,
