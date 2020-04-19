@@ -20,8 +20,16 @@ const shuffle = (a) => {
   return a;
 };
 
-const initialTetrominosBag = shuffle(Object.keys(TETROMINO_SHAPE_ENUM));
-const initialShape = initialTetrominosBag.pop();
+// Always have 2 bags of all the 7 tetrominos
+// in the store (used to display the next tetrominos)
+const createTetrominosBag = () => [
+  ...shuffle(Object.keys(TETROMINO_SHAPE_ENUM)),
+  ...shuffle(Object.keys(TETROMINO_SHAPE_ENUM)),
+];
+
+const initialTetrominosBag = createTetrominosBag();
+// Shift the first shape
+const initialShape = initialTetrominosBag.shift();
 
 // Tetris current tetromino initial state
 export const initialState = {
@@ -29,7 +37,7 @@ export const initialState = {
   rotation: 0, // from 0 to 3,
   yOffset: 0, // Top of the grid
   tetrominosBag: initialTetrominosBag,
-  blocks: _shapeToBlocks[initialShape][0],
+  blocks: _shapeToBlocks[initialShape][0], // Allows more readable in components, not mandatory to store the blocks here
   xOffset: Math.floor(gridInitialState.nbHorizontalBlocks / 2) - 1, // Horizontally centered
 };
 
@@ -59,11 +67,16 @@ const currentTetromino = (state, action) => {
       return { ...state, xOffset: state.xOffset - 1 };
 
     case "STACKED_BLOCKS/STACK_TETROMINO": {
+      // If the first of the 2 bags is enmpty, append a second new one to the stored bag
+      // Used to simulate a continuity in the next tetromino area
       const tetrominosBag =
-        state.tetrominosBag.length > 0
+        state.tetrominosBag.length > 7
           ? state.tetrominosBag
-          : shuffle(Object.keys(TETROMINO_SHAPE_ENUM));
-      const shape = tetrominosBag.pop();
+          : [
+              ...state.tetrominosBag,
+              ...shuffle(Object.keys(TETROMINO_SHAPE_ENUM)),
+            ];
+      const shape = tetrominosBag.shift();
 
       return {
         ...initialState,
@@ -77,8 +90,8 @@ const currentTetromino = (state, action) => {
     case "GRID_CONFIG/CHANGE_NB_VERTICAL_BLOCKS":
     case "GRID_CONFIG/CHANGE_NB_HORIZONTAL_BLOCKS":
     case "STACKED_BLOCKS/RESET_GAME": {
-      const tetrominosBag = shuffle(Object.keys(TETROMINO_SHAPE_ENUM));
-      const shape = tetrominosBag.pop();
+      const tetrominosBag = createTetrominosBag();
+      const shape = tetrominosBag.shift();
 
       return {
         ...initialState,

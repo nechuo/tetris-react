@@ -1,13 +1,13 @@
 import React, { useContext } from "react";
 
 // Constant
-import _shapeToColor from "../../../constants/shapeToColor";
+import _shapeToColor from "../../../../constants/shapeToColor";
 
 // Custom hooks / Helpers
-import calculateIsPossibleMove from "../../../helpers/calculateIsPossibleMove";
+import calculateIsPossibleMove from "../../../../helpers/calculateIsPossibleMove";
 
 // Context
-import { GameContext } from "../Game";
+import { GameContext } from "../../Game";
 
 // Styles
 import styles from "./GhostTetromino.css";
@@ -60,30 +60,27 @@ const GhostTetromino = () => {
   // Render
   return (
     <>
-      {ghostOffset >= 2 && ( // do not draw the ghost tetromino if there is not any remaining place due to the stacked blocks (or, in other words, if you are going to lose !)
-        <div className={classes.ghostTetromino}>
-          {currentTetromino.blocks.map((block, index) => {
-            // Top absolute offset in px
-            const top = (ghostOffset + block.y) * gridConfig.blockSize + 4;
+      {ghostOffset >= 2 && // do not draw the ghost tetromino if there is not any remaining place due to the stacked blocks (or, in other words, if you are going to lose !)
+        currentTetromino.blocks.map((block, index) => {
+          // Top absolute offset in px
+          const top = (ghostOffset + block.y) * gridConfig.blockSize;
 
-            // Left absolute offset in px
-            const left =
-              (currentTetromino.xOffset + block.x) * gridConfig.blockSize + 1;
+          // Left absolute offset in px
+          const left =
+            (currentTetromino.xOffset + block.x) * gridConfig.blockSize;
 
-            return (
-              <div
-                key={index}
-                className={classes.tetromino}
-                style={{
-                  top,
-                  left,
-                  backgroundColor: _shapeToColor[currentTetromino.shape],
-                }}
-              ></div>
-            );
-          })}
-        </div>
-      )}
+          return (
+            <div
+              key={index}
+              className={classes.tetromino}
+              style={{
+                top,
+                left,
+                backgroundColor: _shapeToColor[currentTetromino.shape],
+              }}
+            ></div>
+          );
+        })}
     </>
   );
 };

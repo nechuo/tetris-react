@@ -13,11 +13,11 @@ const useStyles = createUseStyles(styles);
 
 // Constants
 const MIN_BLOCK_SIZE = 5;
-const MAX_BLOCK_SIZE = 60;
+const MAX_BLOCK_SIZE = 100;
 const MIN_VERTICAL_BLOCKS = 10;
-const MAX_VERTICAL_BLOCKS = 230;
+const MAX_VERTICAL_BLOCKS = 500;
 const MIN_HORIZONTAL_BLOCKS = 10;
-const MAX_HORIZONTAL_BLOCKS = 470;
+const MAX_HORIZONTAL_BLOCKS = 500;
 
 const Options = () => {
   // Styles

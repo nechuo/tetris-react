@@ -1,17 +1,17 @@
 import React, { useContext, useEffect, useCallback, useMemo } from "react";
 
 // Constants
-import _shapeToColor from "../../../constants/shapeToColor";
+import _shapeToColor from "../../../../constants/shapeToColor";
 
 // Custom hooks / Helpers
 //import useKeyboardKeys from "../../../customHooks/useKeyboardKeys";
-import usePreviousState from "../../../customHooks/usePreviousState";
-import useControllerKeys from "../../../customHooks/useControllerKeys";
-import calculateIsPossibleMove from "../../../helpers/calculateIsPossibleMove";
+import usePreviousState from "../../../../customHooks/usePreviousState";
+import useControllerKeys from "../../../../customHooks/useControllerKeys";
+import calculateIsPossibleMove from "../../../../helpers/calculateIsPossibleMove";
 
 // Context
-import { GameContext } from "../Game";
-import _shapeToBlocks from "../../../constants/shapeToBlocks";
+import { GameContext } from "../../Game";
+import _shapeToBlocks from "../../../../constants/shapeToBlocks";
 
 // Styles
 import styles from "./CurrentTetromino.css";
@@ -195,15 +195,15 @@ const CurrentTetromino = () => {
 
   return useMemo(
     () => (
-      <div className={classes.currentTetromino}>
+      <>
         {currentTetromino.blocks.map((block, index) => {
           // Top absolute offset in px
           const top =
-            (currentTetromino.yOffset + block.y) * gridConfig.blockSize + 4;
+            (currentTetromino.yOffset + block.y) * gridConfig.blockSize;
 
           // Left absolute offset in px
           const left =
-            (currentTetromino.xOffset + block.x) * gridConfig.blockSize + 1;
+            (currentTetromino.xOffset + block.x) * gridConfig.blockSize;
 
           return (
             <div
@@ -217,7 +217,7 @@ const CurrentTetromino = () => {
             />
           );
         })}
-      </div>
+      </>
     ),
     [classes, currentTetromino, gridConfig.blockSize]
   );

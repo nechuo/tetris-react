@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useMemo } from "react";
 
 // Constants
-import _shapeToColor from "../../../constants/shapeToColor";
+import _shapeToColor from "../../../../constants/shapeToColor";
 
 // Context
-import { GameContext } from "../Game";
+import { GameContext } from "../../Game";
 
 // Styles
 import styles from "./StackedBlocks.css";
@@ -80,21 +80,19 @@ const StackedBlocks = () => {
   // Render stacked blocks
   return useMemo(
     () => (
-      <div className={classes.stackedBlocks}>
-        {stackedBlocks.map((block, index) => {
-          return (
-            <div
-              key={index}
-              className={classes.stackedBlock}
-              style={{
-                top: block.y * gridConfig.blockSize + 3,
-                left: block.x * gridConfig.blockSize + 1,
-                backgroundColor: _shapeToColor[block.shape],
-              }}
-            ></div>
-          );
-        })}
-      </div>
+      <>
+        {stackedBlocks.map((block, index) => (
+          <div
+            key={index}
+            className={classes.stackedBlock}
+            style={{
+              top: block.y * gridConfig.blockSize,
+              left: block.x * gridConfig.blockSize,
+              backgroundColor: _shapeToColor[block.shape],
+            }}
+          ></div>
+        ))}
+      </>
     ),
     [classes, stackedBlocks, gridConfig.blockSize]
   );

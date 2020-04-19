@@ -8,9 +8,6 @@ import intitialState from "../../reducers/initialState";
 import Grid from "./Grid/Grid";
 import Options from "./Options/Options";
 import TetrominoBag from "./TetrominoBag/TetrominoBag";
-import StackedBlocks from "./StackedBlocks/StackedBlocks";
-import GhostTetromino from "./GhostTetromino/GhostTetromino";
-import CurrentTetromino from "./CurrentTetromino/CurrentTetromino";
 
 // Styles
 import styles from "./Game.css";
@@ -33,9 +30,7 @@ const Game = () => {
       <div className={classes.game}>
         <Grid />
         <Options />
-        <StackedBlocks />
-        <GhostTetromino />
-        <CurrentTetromino />
+        <TetrominoBag />
       </div>
     </GameContext.Provider>
   );

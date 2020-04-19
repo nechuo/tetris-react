@@ -1,7 +1,12 @@
-import React, { useContext, useMemo } from "react";
+import React, { useContext } from "react";
 
 // Context
 import { GameContext } from "../Game";
+
+// Components
+import StackedBlocks from "./StackedBlocks/StackedBlocks";
+import GhostTetromino from "./GhostTetromino/GhostTetromino";
+import CurrentTetromino from "./CurrentTetromino/CurrentTetromino";
 
 // Styles
 import styles from "./Grid.css";
@@ -19,7 +24,13 @@ const Grid = () => {
   const classes = useStyles({ theme, gridConfig });
 
   // Render
-  return useMemo(() => <div className={classes.grid}></div>, [classes]);
+  return (
+    <div className={classes.grid}>
+      <StackedBlocks />
+      <GhostTetromino />
+      <CurrentTetromino />
+    </div>
+  );
 };
 
 export default Grid;

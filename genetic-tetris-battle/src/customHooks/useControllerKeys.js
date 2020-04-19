@@ -34,7 +34,7 @@ const useControllerKeys = ({
   };
 
   useEffect(() => {
-    const refreshRate = 43;
+    const refreshRate = 47;
 
     const interval = setInterval(() => {
       // Returns up to 4 gamepads.
