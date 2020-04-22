@@ -28,6 +28,15 @@ const Game = () => {
   return (
     <GameContext.Provider value={{ game, dispatch }}>
       <div className={classes.game}>
+        <span
+          style={{
+            top: 75,
+            left: 30,
+            fontSize: 10,
+            color: "#555555",
+            position: "absolute",
+          }}
+        >{`Cleaned lines: ${game.stack.cleanedLines}`}</span>
         <Grid />
         <Options />
         <TetrominoBag />

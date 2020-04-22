@@ -6,7 +6,7 @@ const styles = {
     },
   },
   button: {
-    top: 30,
+    top: 20,
     left: 30,
     zIndex: 999,
     position: "absolute",

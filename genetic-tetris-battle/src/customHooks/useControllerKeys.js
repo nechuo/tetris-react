@@ -1,6 +1,6 @@
 // Inspired from https://itnext.io/how-not-to-interact-with-your-web-app-with-a-ps4-controller-a3e3036a2f6e
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 /**
  * Custom hook that returns true if the given ps4 controller keys are pressed
@@ -24,14 +24,29 @@ const useControllerKeys = ({
   const [isRotateRight, setIsRotateRight] = useState(false);
 
   // Event handlers
-  const onChange = ({ button, key }) => {
-    if (key === upKey) setIsUp(button.pressed ? true : false);
-    if (key === leftKey) setIsLeft(button.pressed ? !isLeft : false);
-    if (key === downKey) setIsDown(button.pressed ? !isDown : false);
-    if (key === rightKey) setIsRight(button.pressed ? !isRight : false);
-    if (key === rotateLeftKey) setIsRotateLeft(button.pressed ? true : false);
-    if (key === rotateRightKey) setIsRotateRight(button.pressed ? true : false);
-  };
+  const onChange = useCallback(
+    ({ button, key }) => {
+      if (key === upKey) setIsUp(button.pressed ? true : false);
+      if (key === leftKey) setIsLeft(button.pressed ? !isLeft : false);
+      if (key === downKey) setIsDown(button.pressed ? !isDown : false);
+      if (key === rightKey) setIsRight(button.pressed ? !isRight : false);
+      if (key === rotateLeftKey) setIsRotateLeft(button.pressed ? true : false);
+      if (key === rotateRightKey)
+        setIsRotateRight(button.pressed ? true : false);
+    },
+    [
+      upKey,
+      isLeft,
+      isDown,
+      isRight,
+      leftKey,
+      downKey,
+      rightKey,
+      setIsDown,
+      rotateLeftKey,
+      rotateRightKey,
+    ]
+  );
 
   useEffect(() => {
     const refreshRate = 47;
@@ -45,13 +60,11 @@ const useControllerKeys = ({
       }
 
       // Filter out only the buttons which are pressed
-      gamepad.buttons
-        .map((button, key) => ({ button, key }))
-        .forEach(({ button, key }) => onChange({ button, key }));
+      gamepad.buttons.map((button, key) => ({ button, key })).forEach(onChange);
     }, refreshRate);
 
     return () => clearInterval(interval);
-  });
+  }, [onChange]);
 
   return {
     isUp,

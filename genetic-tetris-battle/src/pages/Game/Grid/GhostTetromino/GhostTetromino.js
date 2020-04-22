@@ -14,10 +14,15 @@ import styles from "./GhostTetromino.css";
 import { createUseStyles, useTheme } from "react-jss";
 const useStyles = createUseStyles(styles);
 
+/**
+ * Hook to manage the ghost tetromino logic
+ *
+ * Uses: currentTetromino, stack and gridConfig from GameContext
+ */
 const GhostTetromino = () => {
   // Context Data
   const {
-    game: { currentTetromino, stackedBlocks, gridConfig },
+    game: { currentTetromino, stack, gridConfig },
   } = useContext(GameContext);
 
   // Styles
@@ -40,14 +45,13 @@ const GhostTetromino = () => {
    */
   const calcGhostYOffset = () => {
     let newYOffset = 0;
-    // Try to move the virtual
+    // Try to move the virtual tetromino until it reaches a stacked block (or the bottom of the grid)
     while (
       calculateIsPossibleMove({
         newYOffset,
-        stackedBlocks,
+        ...gridConfig,
         currentTetromino,
-        nbVerticalBlocks: gridConfig.nbVerticalBlocks,
-        nbHorizontalBlocks: gridConfig.nbHorizontalBlocks,
+        stackedBlocks: stack.blocks,
       })
     ) {
       newYOffset++;
@@ -63,11 +67,11 @@ const GhostTetromino = () => {
       {ghostOffset >= 2 && // do not draw the ghost tetromino if there is not any remaining place due to the stacked blocks (or, in other words, if you are going to lose !)
         currentTetromino.blocks.map((block, index) => {
           // Top absolute offset in px
-          const top = (ghostOffset + block.y) * gridConfig.blockSize;
+          const top = (ghostOffset + block.y) * gridConfig.blockSize + 0.5;
 
           // Left absolute offset in px
           const left =
-            (currentTetromino.xOffset + block.x) * gridConfig.blockSize;
+            (currentTetromino.xOffset + block.x) * gridConfig.blockSize + 0.5;
 
           return (
             <div

@@ -65,6 +65,8 @@ const currentTetromino = (state, action) => {
       return { ...state, xOffset: state.xOffset + 1 };
     case "CURRENT_TETROMINO/MOVE_LEFT":
       return { ...state, xOffset: state.xOffset - 1 };
+    case "CURRENT_TETROMINO/MOVE_TO_COORDINATES":
+      return action.target;
 
     case "STACKED_BLOCKS/STACK_TETROMINO": {
       // If the first of the 2 bags is enmpty, append a second new one to the stored bag
