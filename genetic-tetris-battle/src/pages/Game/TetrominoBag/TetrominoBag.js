@@ -1,20 +1,12 @@
 import React, { useContext } from "react";
-
-// Constants
 import _shapeToBlocks from "../../../constants/shapeToBlocks";
 import _shapeToColor from "../../../constants/shapeToColor";
-
-// Context
 import { GameContext } from "../Game";
-
-// Styles
 import styles from "./TetrominoBag.css";
 import { createUseStyles, useTheme } from "react-jss";
 const useStyles = createUseStyles(styles);
 
 const TetrominoBag = () => {
-  // Context data
-  // Note: the tetromino bag is stored inside the currentTetromino to simplify the currentTetromino reducer
   const {
     game: {
       currentTetromino: { tetrominosBag },
@@ -22,13 +14,12 @@ const TetrominoBag = () => {
     },
   } = useContext(GameContext);
 
-  // Styles
   const theme = useTheme();
   const classes = useStyles({ theme, gridConfig });
-
   return (
     <>
-      {gridConfig.blockSize >= 15 && ( // Do not display the next tetrominos queue if the block size config is too small
+      {gridConfig.blockSize >= 15 && (
+        // If the grid is too small, then do not display the next tetrominos.
         <>
           {" "}
           <div className={classes.nextLabelWrapper}>
@@ -42,11 +33,11 @@ const TetrominoBag = () => {
 
               return blocks.map((block, index2) => (
                 <div
-                  key={index * 4 + index2} // Each tetromino has 4 blocks
+                  // Each tetromino has 4 rotations.
+                  key={index * 4 + index2}
                   className={classes.tetrominoBlock}
                   style={{
                     backgroundColor: color,
-                    // Tried a lot of things below, this worked so..
                     left:
                       gridConfig.blockSize / 2 +
                       (block.x * gridConfig.blockSize) / 2,

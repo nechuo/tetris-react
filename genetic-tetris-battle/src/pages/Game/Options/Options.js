@@ -1,17 +1,9 @@
 import React, { useContext, useMemo, useCallback, useState } from "react";
-
-// Context
 import { GameContext } from "../Game";
-
-// UI
 import { InputNumber, Popover, Button } from "antd";
-
-// Styles
 import styles from "./Options.css";
 import { createUseStyles } from "react-jss";
 const useStyles = createUseStyles(styles);
-
-// Constants
 const MIN_BLOCK_SIZE = 5;
 const MAX_BLOCK_SIZE = 100;
 const MIN_VERTICAL_BLOCKS = 10;
@@ -19,20 +11,17 @@ const MAX_VERTICAL_BLOCKS = 500;
 const MIN_HORIZONTAL_BLOCKS = 10;
 const MAX_HORIZONTAL_BLOCKS = 500;
 
+/**
+ * Allows the player to change the grid size.
+ */
 const Options = () => {
-  // Styles
   const classes = useStyles();
-
-  // Local State
   const [isPopoverVisible, setIsPopoverVisible] = useState(false);
-
-  // Context data
   const {
     game: { gridConfig },
     dispatch,
   } = useContext(GameContext);
 
-  // Methods
   const handleChangeNbHorizontalBlocks = useCallback(
     (newValue) => {
       newValue >= MIN_HORIZONTAL_BLOCKS &&
@@ -65,9 +54,6 @@ const Options = () => {
     [dispatch]
   );
 
-  /**
-   * Render the options popo
-   */
   const renderPopoverContent = useMemo(
     () => (
       <div className={classes.optionsWrapper}>

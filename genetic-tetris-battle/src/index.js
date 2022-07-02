@@ -1,10 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-
-// Components
 import Game from "./pages/Game/Game";
-
-//  Styles
 import "antd/dist/antd.min.css";
 import styles from "./index.css";
 import theme from "./assets/css/theme";
@@ -12,7 +8,6 @@ import { ThemeProvider, createUseStyles } from "react-jss";
 const useStyles = createUseStyles(styles);
 
 const App = () => {
-  // Styles
   useStyles();
 
   return (
@@ -21,6 +16,4 @@ const App = () => {
     </ThemeProvider>
   );
 };
-
-// Render the application in the specified div id
 ReactDOM.render(<App />, document.getElementById("root"));

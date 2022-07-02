@@ -1,32 +1,27 @@
-// Helpers
 import calculateIsPossibleMove from "./calculateIsPossibleMove";
 
+// TODO comment or refactor this method.
 const calculateIsPossibleTarget = (gameSnapshot) => {
-  // Readjust the currentTetromino xOffset to start from the left of the grid
-  const readjustedXOffset =
+  const adjustedXOffset =
     gameSnapshot.newXOffset - gameSnapshot.currentTetromino.xOffset;
 
-  // Same for yOffset: start the comparison from the top of the grid and no the current tetromino yOffset
-  const readjustedYOffset =
+  const adjustedYOffset =
     gameSnapshot.newYOffset - gameSnapshot.currentTetromino.yOffset;
 
   if (
-    // Test current tetromino coordinates
     !calculateIsPossibleMove({
       ...gameSnapshot,
-      newXOffset: readjustedXOffset,
-      newYOffset: readjustedYOffset,
+      newXOffset: adjustedXOffset,
+      newYOffset: adjustedYOffset,
     })
   ) {
-    // Current tetromino position either collides with a stacked block or is out of the grid bounds
     return false;
   } else {
-    // Ok, current position matches the games rules, so check if
     if (
       !calculateIsPossibleMove({
         ...gameSnapshot,
-        newXOffset: readjustedXOffset,
-        newYOffset: readjustedYOffset + 1,
+        newXOffset: adjustedXOffset,
+        newYOffset: adjustedYOffset + 1,
       })
     ) {
       return true;
