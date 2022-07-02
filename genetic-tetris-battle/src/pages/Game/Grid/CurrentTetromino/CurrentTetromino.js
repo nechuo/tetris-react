@@ -1,59 +1,34 @@
 import React, { useContext, useEffect, useCallback, useMemo } from "react";
 import moment from "moment";
 import html2canvas from "html2canvas";
-
-// Constants
 import _shapeToColor from "../../../../constants/shapeToColor";
-
-// Custom hooks / Helpers
-//import useKeyboardKeys from "../../../customHooks/useKeyboardKeys";
 import usePreviousState from "../../../../customHooks/usePreviousState";
 import useControllerKeys from "../../../../customHooks/useControllerKeys";
 import calculateIsPossibleMove from "../../../../helpers/calculateIsPossibleMove";
-
-// Context
 import { GameContext } from "../../Game";
 import _shapeToBlocks from "../../../../constants/shapeToBlocks";
-
-// Styles
 import styles from "./CurrentTetromino.css";
 import { createUseStyles, useTheme } from "react-jss";
 import calculateAllAvailableTargets from "../../../../helpers/calculateAllAvailableTargets";
 const useStyles = createUseStyles(styles);
 
 /**
- * Hook to manage the current tetromino logic (moves + rotations from keyboard inputs)
- * Stacks the current tetromino when falling down a stacked block or on the bottom edge of the grid
- *
- * Uses: currentTetromino, stack and gridConfig from GameContext
+ * Moves the falling tetromino.
+ * Stacks the tetromino when it's blocked.
  */
 const CurrentTetromino = () => {
-  // Context data
   const {
     game: { currentTetromino, stack, gridConfig },
     dispatch,
   } = useContext(GameContext);
 
-  // Styles
   const theme = useTheme();
   const classes = useStyles({ theme, gridConfig });
 
-  //===========================
-  // Controller/Keyboard inputs
-  //===========================
+  const { isUp, isLeft, isDown, isRight, isRotateLeft, isRotateRight } =
+    useControllerKeys({});
 
-  // Keyboard keys state
-  const {
-    isUp,
-    isLeft,
-    isDown,
-    isRight,
-    isRotateLeft,
-    isRotateRight,
-  } = useControllerKeys({});
-
-  // Previous key state (from previous render)
-  // Used to prevent re-renders from useEffects below
+  // Prevent re-renders when the pressed key does not change.
   const previousIsUp = usePreviousState(isUp);
   const previousIsLeft = usePreviousState(isLeft);
   const previousIsDown = usePreviousState(isDown);
@@ -61,15 +36,10 @@ const CurrentTetromino = () => {
   const previousIsRotateLeft = usePreviousState(isRotateLeft);
   const previousIsRotateRight = usePreviousState(isRotateRight);
 
-  //================================================================
-  // MAIN USE EFFECT for auto game inputs (gravity and/or tetris AI)
-  //================================================================
-
+  // Makes the tetromino fall.
   // TODO refactor this useEffect with AI best choice
-  // Setup tetromino 'gravity' (move down each 1s)
   useEffect(() => {
     if (
-      // Do not move automatically the tetromino if an controller input is detected
       !isUp &&
       !isDown &&
       !isLeft &&
@@ -77,11 +47,12 @@ const CurrentTetromino = () => {
       !isRotateLeft &&
       !isRotateRight
     ) {
+      // Prevent the thetromino from falling when the player presses a key.
       const allAvailableTargets = calculateAllAvailableTargets({
         ...gridConfig,
+        currentTetromino,
         stackedBlocks: stack.blocks,
         maxStackHeight: stack.maxHeight,
-        currentTetromino, // { blocks, shape, roration, xOffset, yOffset },
         allTetrominoCoordinates: _shapeToBlocks[currentTetromino.shape],
       });
 
@@ -89,7 +60,7 @@ const CurrentTetromino = () => {
         if (allAvailableTargets.length === 0) {
           html2canvas(document.querySelector("#root"))
             .then((canvas) => {
-              // Temporary download screenshot when the grid has no more place for a tetromino
+              // Download a screenshot when the game is over.
               var element = document.createElement("a");
               element.setAttribute("href", canvas.toDataURL("image/jpeg"));
               element.setAttribute("download", "Screenshot" + moment.now());
@@ -116,27 +87,17 @@ const CurrentTetromino = () => {
             ...gridConfig,
           });
         }
-      }, 2); // If no controller input within 5s, give the control back to the AI !
+      }, 2);
 
       return () => clearTimeout(timeout);
     }
   });
 
-  //===========
-
-  /**
-   * checkNewMove
-   *
-   * Calculate if the given new tetromino offsets represent a possible move.
-   * Check the reused calculateIsPossibleMove helper for more information
-   *
-   * useCallback: ensure that this function is re defined each time one of its dependecy changes.
-   * It allows the useEffects below to also trigger when one of theses deps change.
-   * That's the cost of factorising functions inside useEffects !
+  /*
+   * Checks if the tetromino can move to the given direction or rotation.
    */
   const checkNewMove = useCallback(
     (newXOffset, newYOffset, newTetrominoBlocks = currentTetromino.blocks) =>
-      // Check if the given blocks cooridnates do not collide with an existing stacked block nor is out of the grid bounds
       calculateIsPossibleMove({
         newXOffset,
         newYOffset,
@@ -149,12 +110,9 @@ const CurrentTetromino = () => {
     [currentTetromino, stack, gridConfig]
   );
 
-  //=======================
-  // HANDLE TETROMINO MOVES
-  //=======================
-
   // ____________MOVE UP; IMMEDIATE FALL DOWN
   useEffect(() => {
+    // If the player presses the UP arrow, then stack the tetromino.
     if (!previousIsUp && isUp) {
       // Left => newXOffset: -1; newYOffset: 0
       let newYOffset = 0;
